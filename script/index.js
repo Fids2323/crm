@@ -1,55 +1,5 @@
 'use strict';
-
-// const modalTitle = document.querySelector('.modal__title');
-// const modalForm = document.querySelector('.modal__form');
-// const modalCheckbox = document.querySelector('.modal__checkbox');
-// const modalInputDiscount = document.querySelector('.modal__input_discount');
-const overlay = document.querySelector('.overlay');
-const tableBody = document.querySelector('.table__body');
-
-overlay.classList.remove('active');
-
-// Cоздаем эелемент с параметрами
-const createElem = (tag, classes, text, data) => {
-  const elem = document.createElement(tag);
-  if (classes) elem.className = classes;
-  if (text) elem.textContent = text;
-  if (data) elem.dataset.id = data;
-  return elem;
-};
-// Создаем строку таблицы
-const createRow = (obj) => {
-  const tr = createElem('tr');
-  const td1 = createElem('td', 'table__cell', obj.id);
-  const tdName = createElem('td',
-    'table__cell table__cell_left table__cell_name', obj.title, 24601654816512);
-  const span = createElem('span', 'table__cell-id', 'id: 24601654816512');
-  tdName.prepend(span);
-  const tdLeft = createElem('td', 'table__cell table__cell_left', obj.category);
-  const tdNum = createElem('td', 'table__cell', obj.units);
-  const tdCount = createElem('td', 'table__cell', obj.count);
-  const tdPrice = createElem('td', 'table__cell','₽ '+ obj.price);
-  const tdTotalPrice = createElem('td', 'table__cell','₽ '+ obj.price * obj.count);
-  const tdBtnWrap = createElem('td', 'table__cell table__cell_btn-wrapper');
-  const buttonPic = createElem('button', 'table__btn table__btn_pic');
-  const buttonEdit = createElem('button', 'table__btn table__btn_edit');
-  const buttonDel = createElem('button', 'table__btn table__btn_del');
-  tdBtnWrap.append(buttonPic, buttonEdit, buttonDel);
-  tr.append(td1, tdName, tdLeft, tdNum,
-    tdCount, tdPrice, tdTotalPrice, tdBtnWrap);
-  return tr;
-};
-// Добавляем строки в таблицу
-const renderGoods = (arr) => {
-  arr.map((tr) => {
-    const row = createRow(tr);
-    tableBody.append(row);
-  });
-};
-
-tableBody.textContent = '';
-
-renderGoods([
+const supplies = [
   {
     'id': 1,
     'title': 'Смартфон Xiaomi 11T 8/128GB',
@@ -106,4 +56,69 @@ renderGoods([
       'big': 'img/lan_proconnect43-3-25-b.jpg',
     },
   },
-]);
+];
+
+const overlay = document.querySelector('.overlay');
+const tableBody = document.querySelector('.table__body');
+const btnAdd = document.querySelector('.panel__add-goods');
+const btnClose = document.querySelector('.modal__close');
+const modal = document.querySelector('.modal');
+
+overlay.classList.remove('active');
+
+// Cоздаем эелемент с параметрами
+const createElem = (tag, classes, text, data) => {
+  const elem = document.createElement(tag);
+  if (classes) elem.className = classes;
+  if (text) elem.textContent = text;
+  if (data) elem.dataset.id = data;
+  return elem;
+};
+// Создаем строку таблицы
+const createRow = (obj) => {
+  const tr = createElem('tr');
+  const td1 = createElem('td', 'table__cell', obj.id);
+  const tdName = createElem('td',
+    'table__cell table__cell_left table__cell_name', obj.title, 24601654816512);
+  const span = createElem('span', 'table__cell-id', 'id: 24601654816512');
+  tdName.prepend(span);
+  const tdLeft = createElem('td', 'table__cell table__cell_left', obj.category);
+  const tdNum = createElem('td', 'table__cell', obj.units);
+  const tdCount = createElem('td', 'table__cell', obj.count);
+  const tdPrice = createElem('td', 'table__cell', '₽ ' + obj.price);
+  const tdTotalPrice = createElem('td', 'table__cell', '₽ ' + obj.price * obj.count);
+  const tdBtnWrap = createElem('td', 'table__cell table__cell_btn-wrapper');
+  const buttonPic = createElem('button', 'table__btn table__btn_pic');
+  const buttonEdit = createElem('button', 'table__btn table__btn_edit');
+  const buttonDel = createElem('button', 'table__btn table__btn_del');
+  tdBtnWrap.append(buttonPic, buttonEdit, buttonDel);
+  tr.append(td1, tdName, tdLeft, tdNum,
+    tdCount, tdPrice, tdTotalPrice, tdBtnWrap);
+  return tr;
+};
+// Добавляем строки в таблицу
+const renderGoods = (arr) => {
+  arr.map((tr) => {
+    const row = createRow(tr);
+    tableBody.append(row);
+  });
+};
+
+tableBody.textContent = '';
+
+
+btnAdd.addEventListener('click', () => {
+  overlay.classList.add('active');
+});
+modal.addEventListener('click', e => {
+  e.stopPropagation();
+});
+overlay.addEventListener('click', () => {
+  overlay.classList.remove('active');
+});
+btnClose.addEventListener('click', () => {
+  overlay.classList.remove('active');
+});
+
+
+renderGoods(supplies);
