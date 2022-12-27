@@ -1,5 +1,5 @@
 'use strict';
-const supplies = [
+let supplies = [
   {
     'id': 1,
     'title': 'Смартфон Xiaomi 11T 8/128GB',
@@ -61,9 +61,6 @@ const supplies = [
 const overlay = document.querySelector('.overlay');
 const tableBody = document.querySelector('.table__body');
 const btnAdd = document.querySelector('.panel__add-goods');
-const btnClose = document.querySelector('.modal__close');
-const modal = document.querySelector('.modal');
-
 overlay.classList.remove('active');
 
 // Cоздаем эелемент с параметрами
@@ -110,15 +107,25 @@ tableBody.textContent = '';
 btnAdd.addEventListener('click', () => {
   overlay.classList.add('active');
 });
-modal.addEventListener('click', e => {
-  e.stopPropagation();
-});
-overlay.addEventListener('click', () => {
-  overlay.classList.remove('active');
-});
-btnClose.addEventListener('click', () => {
-  overlay.classList.remove('active');
-});
 
+overlay.addEventListener('click', (e) => {
+  const target = e.target;
+  if (target === overlay || target.closest('.modal__close')) {
+    overlay.classList.remove('active');
+  }
+});
 
 renderGoods(supplies);
+
+const tbody = document.querySelector('.table__body');
+tbody.addEventListener('click', (e) => {
+  const target = e.target;
+  if (target.closest('.table__btn_del')) {
+    const tr = target.closest('tr');
+    const indexRow = tr.querySelector('.table__cell').textContent;
+    supplies = supplies.filter(supply => supply.id !== +indexRow);
+    console.log(supplies);
+    tableBody.textContent = '';
+    renderGoods(supplies);
+  }
+});
