@@ -72,9 +72,9 @@ const createElem = (tag, classes, text, data) => {
   return elem;
 };
 // Создаем строку таблицы
-const createRow = (obj) => {
+const createRow = (obj,index) => {
   const tr = createElem('tr');
-  const td1 = createElem('td', 'table__cell', obj.id);
+  const td1 = createElem('td', 'table__cell', `${index}`);
   const tdName = createElem('td',
     'table__cell table__cell_left table__cell_name', obj.title, 24601654816512);
   const span = createElem('span', 'table__cell-id', 'id: 24601654816512');
@@ -95,8 +95,8 @@ const createRow = (obj) => {
 };
 // Добавляем строки в таблицу
 const renderGoods = (arr) => {
-  arr.map((tr) => {
-    const row = createRow(tr);
+  arr.forEach((tr,index) => {
+    const row = createRow(tr,++index);
     tableBody.append(row);
   });
 };
@@ -122,8 +122,9 @@ tbody.addEventListener('click', (e) => {
   const target = e.target;
   if (target.closest('.table__btn_del')) {
     const tr = target.closest('tr');
-    const indexRow = tr.querySelector('.table__cell').textContent;
-    supplies = supplies.filter(supply => supply.id !== +indexRow);
+		//Через slice достучался до текста, т.к если привязать id, то при обновлении массива индекс строк будет не правильный.
+    const textRow = tr.querySelector('.table__cell_name').textContent.slice(18);
+    supplies = supplies.filter(supply => supply.title !== textRow);
     console.log(supplies);
     tableBody.textContent = '';
     renderGoods(supplies);
