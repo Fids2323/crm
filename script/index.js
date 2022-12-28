@@ -122,7 +122,7 @@ tbody.addEventListener('click', (e) => {
   const target = e.target;
   if (target.closest('.table__btn_del')) {
     const tr = target.closest('tr');
-		//Через slice достучался до текста, т.к если привязать id, то при обновлении массива индекс строк будет не правильный.
+		//Через slice достучался до текста, т.к если привязать id, то при обновлении массива индекс строк будет не правильный.Если бы data-id была индивидуальной, то привязал
     const textRow = tr.querySelector('.table__cell_name').textContent.slice(18);
     supplies = supplies.filter(supply => supply.title !== textRow);
     console.log(supplies);
