@@ -5,12 +5,12 @@ import {
 } from './modules/control.js'
 
 import modalControl from './modules/modalControl.js'
-
+{
 	const init = () => {
 		modalControl()
 		countTotalPrice()
 		addSupply()
 		deleteSupply()
-	}
-
-init()
+	};
+	window.crmInit = init;
+}
