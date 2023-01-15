@@ -5,7 +5,7 @@ import {
 } from './modules/control.js'
 
 import modalControl from './modules/modalControl.js'
-{
+
 	const init = () => {
 		modalControl()
 		countTotalPrice()
@@ -13,4 +13,3 @@ import modalControl from './modules/modalControl.js'
 		deleteSupply()
 	};
 	window.crmInit = init;
-}
