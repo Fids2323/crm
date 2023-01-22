@@ -22,6 +22,7 @@ const createRow = (obj, index) => {
   const tdTotalPrice = createElem('td', 'table__cell', '₽ ' + (obj.price * obj.count) / 100 * (100 - obj.discount));
   const tdBtnWrap = createElem('td', 'table__cell table__cell_btn-wrapper');
   const buttonPic = createElem('button', 'table__btn table__btn_pic');
+	buttonPic.dataset.pic = 'https://look.com.ua/pic/201704/800x600/look.com.ua-204614.jpg'
   const buttonEdit = createElem('button', 'table__btn table__btn_edit');
   const buttonDel = createElem('button', 'table__btn table__btn_del');
   tdBtnWrap.append(buttonPic, buttonEdit, buttonDel);
