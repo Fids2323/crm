@@ -17,8 +17,7 @@ const openImage = () => {
 			const windowWidth = screen.width;
 			const right = (windowWidth - 800) / 2;
 			const bot = (windowHeight - 600) / 2;
-			const image =open(url, 'pica'," width=800,height= 600")
-			image.moveTo(right,bot)
+			const image =open(url, 'pica', `width=800,height= 600,top=${bot},left=${right}`)
 		}
 	})
 }
