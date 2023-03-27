@@ -1,3 +1,6 @@
+import { API_URL } from "./const.js";
+import { tbody } from "./const.js";
+
 // Create element with parameters
 const createElem = (tag, classes, text, data) => {
   const elem = document.createElement(tag);
@@ -8,7 +11,7 @@ const createElem = (tag, classes, text, data) => {
 };
 
 // Create tableRow
-const createRow = (obj, index) => {
+export const createRow = (obj, index) => {
   const tr = createElem("tr");
   const td1 = createElem("td", "table__cell", `${index}`);
   const tdName = createElem(
@@ -30,8 +33,7 @@ const createRow = (obj, index) => {
   );
   const tdBtnWrap = createElem("td", "table__cell table__cell_btn-wrapper");
   const buttonPic = createElem("button", "table__btn table__btn_pic");
-  buttonPic.dataset.pic =
-    "https://look.com.ua/pic/201704/800x600/look.com.ua-204614.jpg";
+  buttonPic.dataset.pic = `${API_URL}${obj.image}`;
   const buttonEdit = createElem("button", "table__btn table__btn_edit");
   const buttonDel = createElem("button", "table__btn table__btn_del");
   tdBtnWrap.append(buttonPic, buttonEdit, buttonDel);
@@ -48,16 +50,41 @@ const createRow = (obj, index) => {
   return tr;
 };
 
-const createPreview = () => {
-  const fieldset = document.querySelector(".modal__fieldset");
-  const wrapper = document.createElement("div");
-  const img = document.createElement("img");
-
-  img.className = "preview";
-  wrapper.className = "wrapper";
-  wrapper.append(img);
-  fieldset.after(wrapper);
-  img.style.cssText = "margin: 0 auto 20px; display: block;";
+//count price
+export const countPrice = (price, num, discount) => {
+  let result = 0;
+  if (price) {
+    result += price;
+  }
+  if (num) {
+    result *= num;
+  }
+  if (discount) {
+    result = (result / 100) * (100 - discount);
+  }
+  return result;
 };
 
-export { createElem, createRow, createPreview };
+//count total price
+export const countTotalPrice = (arr) => {
+  const cmsTotalPrice = document.querySelector(".cms__total-price");
+  const result = arr.reduce(
+    (acc, supply) =>
+      acc + countPrice(supply.price, supply.count, supply.discount),
+    0
+  );
+  cmsTotalPrice.textContent = "₽ " + result;
+};
+
+export const initTable = () => {
+  tbody.textContent = "";
+  fetch(`${API_URL}api/goods`)
+    .then((response) => response.json())
+    .then((data) => {
+      data.forEach((tr, index) => {
+        const row = createRow(tr, ++index);
+        tbody.append(row);
+      });
+      countTotalPrice(data);
+    });
+};
