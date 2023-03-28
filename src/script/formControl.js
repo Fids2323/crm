@@ -1,15 +1,29 @@
-import { API_URL, tbody } from "./const";
+import { API_URL, tbody, vendorCodeId } from "./const";
 import { modalClose, modalOpen } from "./controls";
 import { toBase64 } from "./utils";
 import { form } from "./const";
 import axios from "axios";
 import { initTable } from "./initTable";
 
-//Add select by category in modal
+//Add select by category & data-action by form
 const selectCategory = document.querySelector("#category");
 selectCategory.setAttribute("list", "category-list");
 const dataList = document.createElement("datalist");
 dataList.id = "category-list";
+form.setAttribute(`data-action`, "add");
+
+export const initCategory = () => {
+  selectCategory.parentNode.after(dataList);
+  fetch(`${API_URL}api/category`)
+    .then((response) => response.json())
+    .then((data) => {
+      data.forEach((item) => {
+        const option = document.createElement("option");
+        option.setAttribute("value", item);
+        dataList.append(option);
+      });
+    });
+};
 
 //Required inputs with modal
 const arrayModalInput = [...document.querySelectorAll(".modal__input")];
@@ -56,9 +70,9 @@ imageBtn.addEventListener("change", async () => {
 });
 
 //Add goods
-const vendorCodeId = document.querySelector(".vendor-code__id");
 
 form.addEventListener("submit", async (e) => {
+  const action = form.getAttribute("data-action");
   e.preventDefault();
   const formData = new FormData(e.target);
   const newGoods = Object.fromEntries(formData);
@@ -73,25 +87,46 @@ form.addEventListener("submit", async (e) => {
   }
   newGoods.count = +newGoods.count;
   newGoods.price = +newGoods.price;
+  console.log(newGoods);
 
   //Send goods & clear form
-  axios
-    .post(`${API_URL}api/goods`, newGoods)
-    .then((response) => {
-      console.log(response.data);
-      form.reset();
-      modalClose();
-      initTable();
-    })
-    .catch((error) => {
-      previewText.style.cssText =
-        "color: red; font-size: 16px; font-weight: bold";
-      if (error.response.status >= 400) {
-        previewText.textContent = `Сообщение об ошибке: ${error.response.data.message}`;
-      } else {
-        previewText = "Что-то пошло не так...";
-      }
-    });
+  if (action === "add") {
+    axios
+      .post(`${API_URL}api/goods`, newGoods)
+      .then((response) => {
+        console.log(response.data);
+        form.reset();
+        modalClose();
+        initTable();
+      })
+      .catch((error) => {
+        previewText.style.cssText =
+          "color: red; font-size: 16px; font-weight: bold";
+        if (error.response.status >= 400) {
+          previewText.textContent = `Сообщение об ошибке: ${error.response.data.message}`;
+        } else {
+          previewText = "Что-то пошло не так...";
+        }
+      });
+  } else {
+    axios
+      .patch(`${API_URL}api/goods/${newGoods.id}`, newGoods)
+      .then((response) => {
+        console.log(response);
+        form.reset();
+        modalClose();
+        initTable();
+      })
+      .catch((error) => {
+        previewText.style.cssText =
+          "color: red; font-size: 16px; font-weight: bold";
+        if (error.response.status >= 400) {
+          previewText.textContent = `Сообщение об ошибке: ${error.response.data.message}`;
+        } else {
+          previewText = "Что-то пошло не так...";
+        }
+      });
+  }
 });
 
 //Edit goods
@@ -112,8 +147,8 @@ tbody.addEventListener("click", (e) => {
     const idGoods = +tr.querySelector(".table__cell_left").dataset.id;
     axios(`${API_URL}api/goods/${idGoods}`).then((response) => {
       const goods = response.data;
-      console.log(goods);
       modalOpen();
+      form.dataset.action = "edit";
       vendorCodeId.textContent = `${idGoods}`;
       titleInput.value = goods.title;
       categoryInput.value = goods.category;
@@ -121,7 +156,9 @@ tbody.addEventListener("click", (e) => {
       unitsInput.value = goods.units;
       countInput.value = goods.count;
       priceInput.value = goods.price;
-
+      if (goods.image !== "image/notimage.jpg") {
+        img.src = `${API_URL}${goods.image}`;
+      }
       if (goods.discount) {
         const modalCheckbox = document.querySelector(".modal__checkbox");
         const modalInputDiscount = document.querySelector(
@@ -134,16 +171,3 @@ tbody.addEventListener("click", (e) => {
     });
   }
 });
-
-export const initCategory = () => {
-  selectCategory.parentNode.after(dataList);
-  fetch(`${API_URL}api/category`)
-    .then((response) => response.json())
-    .then((data) => {
-      data.forEach((item) => {
-        const option = document.createElement("option");
-        option.setAttribute("value", item);
-        dataList.append(option);
-      });
-    });
-};

@@ -83,6 +83,7 @@ export const modalOpen = () => {
   overlay.classList.add("active");
   vendorCodeId.textContent = getRandomInt(1000000000, 9999999999);
   form.reset();
+  form.dataset.action = "add";
 };
 
 export const modalClose = () => {

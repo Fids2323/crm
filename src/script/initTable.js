@@ -73,7 +73,7 @@ export const countTotalPrice = (arr) => {
       acc + countPrice(supply.price, supply.count, supply.discount),
     0
   );
-  cmsTotalPrice.textContent = "₽ " + result;
+  cmsTotalPrice.textContent = "₽ " + result.toFixed(2);
 };
 
 export const initTable = () => {
