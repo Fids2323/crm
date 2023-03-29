@@ -1,8 +1,8 @@
 import axios from "axios";
-import { form, tbody } from "./const";
+import { form, modalTotalPrice, tbody } from "./const";
 import { API_URL } from "./const.js";
-import { countPrice, countTotalPrice, createRow, initTable } from "./initTable";
-import { getRandomInt } from "./utils";
+import { countTotalPrice, createRow, initTable } from "./initTable";
+import { countPrice, getRandomInt } from "./utils";
 
 //Open image
 tbody.addEventListener("click", (e) => {
@@ -75,7 +75,6 @@ const vendorCodeId = document.querySelector(".vendor-code__id");
 const modalPrice = document.querySelector("#price");
 const modalCount = document.querySelector("#count");
 const modalDiscount = document.querySelector(".modal__input_discount");
-const modalTotalPrice = document.querySelector(".modal__total-price");
 const modalCheckbox = document.querySelector(".modal__checkbox");
 const modalInputDiscount = document.querySelector(".modal__input_discount");
 

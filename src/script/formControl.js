@@ -1,6 +1,6 @@
-import { API_URL, tbody, vendorCodeId } from "./const";
+import { API_URL, modalTotalPrice, tbody, vendorCodeId } from "./const";
 import { modalClose, modalOpen } from "./controls";
-import { toBase64 } from "./utils";
+import { countPrice, toBase64 } from "./utils";
 import { form } from "./const";
 import axios from "axios";
 import { initTable } from "./initTable";
@@ -87,7 +87,6 @@ form.addEventListener("submit", async (e) => {
   }
   newGoods.count = +newGoods.count;
   newGoods.price = +newGoods.price;
-  console.log(newGoods);
 
   //Send goods & clear form
   if (action === "add") {
@@ -111,8 +110,7 @@ form.addEventListener("submit", async (e) => {
   } else {
     axios
       .patch(`${API_URL}api/goods/${newGoods.id}`, newGoods)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         form.reset();
         modalClose();
         initTable();
@@ -168,6 +166,12 @@ tbody.addEventListener("click", (e) => {
         modalInputDiscount.disabled = false;
         modalCheckbox.checked = true;
       }
+      const resultModalPrice = countPrice(
+        goods.price,
+        goods.count,
+        goods.discount
+      );
+      modalTotalPrice.textContent = `₽ ${resultModalPrice}`;
     });
   }
 });

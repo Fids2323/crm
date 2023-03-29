@@ -1,5 +1,6 @@
 import { API_URL } from "./const.js";
 import { tbody } from "./const.js";
+import { countPrice } from "./utils.js";
 
 // Create element with parameters
 const createElem = (tag, classes, text, data) => {
@@ -48,21 +49,6 @@ export const createRow = (obj, index) => {
     tdBtnWrap
   );
   return tr;
-};
-
-//count price
-export const countPrice = (price, num, discount) => {
-  let result = 0;
-  if (price) {
-    result += price;
-  }
-  if (num) {
-    result *= num;
-  }
-  if (discount) {
-    result = (result / 100) * (100 - discount);
-  }
-  return result;
 };
 
 //count total price
