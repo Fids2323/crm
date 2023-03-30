@@ -70,7 +70,6 @@ imageBtn.addEventListener("change", async () => {
 });
 
 //Add goods
-
 form.addEventListener("submit", async (e) => {
   const action = form.getAttribute("data-action");
   e.preventDefault();
@@ -93,7 +92,6 @@ form.addEventListener("submit", async (e) => {
     axios
       .post(`${API_URL}api/goods`, newGoods)
       .then((response) => {
-        console.log(response.data);
         form.reset();
         modalClose();
         initTable();
@@ -108,6 +106,9 @@ form.addEventListener("submit", async (e) => {
         }
       });
   } else {
+    if (newGoods.image === "data:") {
+      delete newGoods.image;
+    }
     axios
       .patch(`${API_URL}api/goods/${newGoods.id}`, newGoods)
       .then(() => {

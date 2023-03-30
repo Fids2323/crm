@@ -93,6 +93,7 @@ export const modalClose = () => {
   modalTotalPrice.textContent = "₽ 0";
   img.removeAttribute("src");
   previewText.textContent = "";
+  modalInputDiscount.disabled = true;
 };
 
 //Open and close the modal
