@@ -91,7 +91,7 @@ form.addEventListener("submit", async (e) => {
   if (action === "add") {
     axios
       .post(`${API_URL}api/goods`, newGoods)
-      .then((response) => {
+      .then(() => {
         form.reset();
         modalClose();
         initTable();
@@ -172,7 +172,7 @@ tbody.addEventListener("click", (e) => {
         goods.count,
         goods.discount
       );
-      modalTotalPrice.textContent = `₽ ${resultModalPrice}`;
+      modalTotalPrice.textContent = `₽ ${resultModalPrice.toFixed(2)}`;
     });
   }
 });

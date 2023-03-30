@@ -33,5 +33,5 @@ export const countPrice = (price, num, discount) => {
   if (discount && discount !== 0) {
     result = (result / 100) * (100 - discount);
   }
-  return result;
+  return +result.toFixed(2);
 };

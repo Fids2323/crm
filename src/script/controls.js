@@ -7,7 +7,7 @@ import { countPrice, getRandomInt } from "./utils";
 //Open image
 tbody.addEventListener("click", (e) => {
   const target = e.target;
-  if (target.closest(".table__btn_pic")) {
+  if (target.closest(".table__btn_pic") && target.dataset.pic) {
     const url = target.dataset.pic;
     const windowHeight = screen.height;
     const windowWidth = screen.width;

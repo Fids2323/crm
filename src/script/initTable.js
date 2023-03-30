@@ -13,6 +13,7 @@ const createElem = (tag, classes, text, data) => {
 
 // Create tableRow
 export const createRow = (obj, index) => {
+  console.log(obj);
   const tr = createElem("tr");
   const td1 = createElem("td", "table__cell", `${index}`);
   const tdName = createElem(
@@ -34,7 +35,9 @@ export const createRow = (obj, index) => {
   );
   const tdBtnWrap = createElem("td", "table__cell table__cell_btn-wrapper");
   const buttonPic = createElem("button", "table__btn table__btn_pic");
-  buttonPic.dataset.pic = `${API_URL}${obj.image}`;
+  if (obj.image !== "image/notimage.jpg") {
+    buttonPic.dataset.pic = `${API_URL}${obj.image}`;
+  }
   const buttonEdit = createElem("button", "table__btn table__btn_edit");
   const buttonDel = createElem("button", "table__btn table__btn_del");
   tdBtnWrap.append(buttonPic, buttonEdit, buttonDel);
