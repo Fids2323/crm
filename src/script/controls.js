@@ -2,7 +2,7 @@ import axios from "axios";
 import { form, modalTotalPrice, tbody } from "./const";
 import { API_URL } from "./const.js";
 import { countTotalPrice, createRow, initTable } from "./initTable";
-import { countPrice, getRandomInt } from "./utils";
+import { countPrice } from "./utils";
 
 //Open image
 tbody.addEventListener("click", (e) => {
@@ -80,7 +80,7 @@ const modalInputDiscount = document.querySelector(".modal__input_discount");
 
 export const modalOpen = () => {
   overlay.classList.add("active");
-  vendorCodeId.textContent = getRandomInt(1000000000, 9999999999);
+  vendorCodeId.textContent = "";
   form.reset();
   form.dataset.action = "add";
 };
